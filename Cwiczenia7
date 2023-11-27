@@ -1,0 +1,82 @@
+public class Main {
+    public static void main(String[] args) {
+//        Person osoba1 = new Person("Stefan", 24);
+//        Person osoba2 = new Person("Stefan", 25);
+//        System.out.println(osoba1);
+//        osoba1.greet();
+//        BookDTO ksiazka1 = new BookDTO("Scania", "Michal Chojnacki", 50,2023);
+//        BookDTO ksiazka2 = new BookDTO("Iveco", "Michal Chojnacki", 5,1410);
+//        BookDTO ksiazka3 = new BookDTO("Daf", "Michal Chojnacki", 35,2018);
+//        BookDTO ksiazka4 = new BookDTO("Man", "Michal Chojnacki", 45,2005);
+        Point2D jeden = new Point2D(1,2);
+        Point2D dwa = new Point2D(3,4);
+        System.out.println(jeden.DistanceTo(dwa));
+    }
+}
+public record Address(String street, int houseNumber, int postalCode, String city) {
+}
+public record Person1(
+        String firstName,
+        String lastName,
+        Address) {
+}
+public record Person(String name, int age) {
+    public Person{
+        if(age < 0){
+            age = 0;
+        }
+    }
+    public Person(String name){
+        this(name, 15);
+    }
+    @Override
+    public String toString() {
+        return this.name + " " + this.age();
+    }
+    public void greet(){
+        System.out.println("Cześć");
+    }
+}
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
+
+public record Point2D(double x, double y) {
+    public double DistanceTo(Point2D otherPoint){
+        double lewo = pow(this.x - otherPoint.x,2);
+        double prawo = pow(this.y - otherPoint.y,2);
+        double wynik = sqrt(lewo + prawo);
+        return wynik;
+    }
+}
+public record BookDTO(String title, String author, double price, int yearOfPublication) {
+}
+import java.util.Objects;
+
+public class Animal {
+    public String name;
+    public int age;
+    public double weight;
+    public Animal(String name, int age, double weight){
+        this.name = name;
+        this.age = age;
+        this.weight = weight;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Animal animal = (Animal) o;
+        return age == animal.age && Double.compare(weight, animal.weight) == 0 && Objects.equals(name, animal.name);
+    }
+    @Override
+    public int hashCode(){
+        int hash = 17;
+        hash += 16*age;
+        long doubleToLong = Double.doubleToLongBits(weight);
+        hash += (int)(doubleToLong ^ (doubleToLong >>>32));
+        hash += 16 * name.hashCode();
+        return hash;
+    }
+
+}
+
