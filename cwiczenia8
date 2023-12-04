@@ -1,0 +1,259 @@
+public class Main {
+    public static void main(String[] args) {
+
+
+}
+}
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Student implements Comparable<Student>, Cloneable {
+    String name;
+    double averageGrade;
+    int yearOfBirth;
+
+    public Student(String name, double averageGrade, int yearOfBirth) {
+        this.name = name;
+        this.averageGrade = averageGrade;
+        this.yearOfBirth = yearOfBirth;
+    }
+
+    public Student(double averageGrade) {
+        name = "default";
+        yearOfBirth = 2000;
+        this.averageGrade = averageGrade;
+    }
+    @Override
+    public String toString(){
+        return  "" + yearOfBirth;
+    }
+    @Override
+    public int compareTo(Student o){
+        return (int) Math.signum(o.averageGrade - this.averageGrade);
+    }
+    public static void main(String[] args) {
+//        ArrayList<Student> studentList= new ArrayList<>();
+//        studentList.add(new Student(3.5));
+//        studentList.add(new Student(3.8));
+//        studentList.add(new Student(4.5));
+//        studentList.add(new Student(3.1));
+//        System.out.println(studentList);
+//        studentList.sort(new AverageGradeStudentComparator());
+//        System.out.println(studentList);
+        Student s1 = new Student("Stefan", 3.5 , 2000);
+        Student s2 = (Student)s1.clone();
+        System.out.println(s1 + " " + s2);
+    }
+    @Override
+    public Student clone(){
+        try{
+            Student clone = (Student) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e){
+            throw new AssertionError();
+        }
+    }
+}
+class YearStudentComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2){
+        return (int)Math.signum(o2.yearOfBirth - o1.yearOfBirth);
+    }
+}
+
+class AverageGradeStudentComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student o1, Student o2) {
+        return (int) Math.signum(o2.averageGrade - o1.averageGrade);
+    }
+}
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Student1 implements Comparable<Student1> {
+    String imie;
+    double sredniaOcen;
+    int rokStudiow;
+
+    public Student1(String imie, double sredniaOcen, int rokStudiow) {
+        this.imie = imie;
+        this.sredniaOcen = sredniaOcen;
+        this.rokStudiow = rokStudiow;
+    }
+
+    @Override
+    public int compareTo(Student1 o) {
+        int zmienna = (int) Math.signum(o.sredniaOcen - this.sredniaOcen);
+        if (zmienna == 0) {
+            return (int) Math.signum(this.rokStudiow - o.rokStudiow);
+        } else {
+            return zmienna;
+        }
+    }
+    public String toString(){
+        return imie + " " + sredniaOcen + " " + rokStudiow;
+    }
+    public static void main(String[] args){
+        ArrayList<Student1> listaStudenow = new ArrayList<>();
+        listaStudenow.add(new Student1("Kamil", 3.5,2));
+        listaStudenow.add(new Student1("Marcin", 4,1));
+        listaStudenow.add(new Student1("Bartek", 3.5,3));
+        listaStudenow.add(new Student1("Michał", 4.5,1));
+        listaStudenow.add(new Student1("Wojciech", 4.5,2));
+        System.out.println(listaStudenow);
+        Collections.sort(listaStudenow);
+        System.out.println(listaStudenow);
+    }
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class Pracownik implements Comparable<Pracownik> {
+    String imie;
+    double pensja;
+    LocalDate dataZatrudnienia;
+
+    public Pracownik(String imie, double pensja, LocalDate dataZatrudnienia) {
+        this.imie = imie;
+        this.pensja = pensja;
+        this.dataZatrudnienia = dataZatrudnienia;
+    }
+
+    public Pracownik(String imie, double pensja) {
+        this.imie = imie;
+        dataZatrudnienia = LocalDate.of(2023,12,4);
+        this.pensja = pensja;
+    }
+    @Override
+    public String toString(){
+        return "" + pensja;
+    }
+    public static void main(String[] args){
+        ArrayList<Pracownik> pracownicy = new ArrayList<>();
+        pracownicy.add(new Pracownik("Kamil", 3000));
+        pracownicy.add(new Pracownik("Wojciech", 3500));
+        pracownicy.add(new Pracownik("Marcin",3250));
+        pracownicy.add(new Pracownik("Stefan",2800));
+        pracownicy.add(new Pracownik("Jan", 5000));
+        Collections.sort(pracownicy);
+        System.out.println(pracownicy);
+    }
+    @Override
+    public int compareTo(Pracownik o) {
+        return (int) Math.signum(this.pensja - o.pensja );
+    }
+}
+class PensjaComparator implements Comparator<Pracownik>{
+    @Override
+    public int compare(Pracownik o1, Pracownik o2){
+        return (int)Math.signum(o1.pensja - o2.pensja);
+    }
+}
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+
+public class Klient implements Comparable<Klient> {
+    String imie;
+    int nrKlienta;
+    Date ostatnieLogowanie;
+
+    public Klient(String imie, int nrKlienta, Date ostatnieLogowanie) {
+        this.imie = imie;
+        this.nrKlienta = nrKlienta;
+        this.ostatnieLogowanie = ostatnieLogowanie;
+    }
+
+    public Klient(Date ostatnieLogowanie) {
+        imie = "default";
+        nrKlienta = 0;
+        this.ostatnieLogowanie = ostatnieLogowanie;
+    }
+    @Override
+    public String toString(){
+        return "" + ostatnieLogowanie.getYear() +" "+ ostatnieLogowanie.getMonth() +" "+ ostatnieLogowanie.getDay();
+    }
+
+    @Override
+    public int compareTo(Klient o) {
+        if (o.ostatnieLogowanie.after(this.ostatnieLogowanie)){
+            return 1;
+        } else if (o.ostatnieLogowanie.before(this.ostatnieLogowanie)){
+            return -1;
+        }else {
+            return 0;
+        }
+    }
+    public static void main(String[] args){
+        ArrayList<Klient> listaKlientow = new ArrayList<>();
+        listaKlientow.add(new Klient("Andrzej",1,new Date(2023, Calendar.JANUARY,2)));
+        listaKlientow.add(new Klient("Andrzej",1,new Date(2021, Calendar.APRIL,1)));
+        listaKlientow.add(new Klient("Andrzej",1,new Date(2022, Calendar.OCTOBER,3)));
+        listaKlientow.add(new Klient("Andrzej",1,new Date(2019, Calendar.MAY,8)));
+        listaKlientow.add(new Klient("Andrzej",1,new Date(2016, Calendar.DECEMBER,5)));
+        System.out.println(listaKlientow);
+        Collections.sort(listaKlientow);
+        System.out.println(listaKlientow);
+    }
+}
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Osoba implements Comparable<Osoba>{
+    String imie;
+    int wzrost;
+    LocalDate dataUrodzenia;
+
+    public Osoba(String imie, int wzrost, LocalDate dataUrodzenia) {
+        this.imie = imie;
+        this.wzrost = wzrost;
+        this.dataUrodzenia = dataUrodzenia;
+    }
+    @Override
+    public String toString(){
+        return imie +" "+ wzrost;
+    }
+    @Override
+    public int compareTo(Osoba o) {
+        return (int)Math.signum(o.wzrost - this.wzrost);
+    }
+    public static void main(String[] args){
+        ArrayList<Osoba> listaOsob = new ArrayList<>();
+        listaOsob.add(new Osoba("Kamil", 180, LocalDate.of(2002,6,20)));
+        listaOsob.add(new Osoba("Bartek", 185, LocalDate.of(2003,9,15)));
+        listaOsob.add(new Osoba("Łukasz", 168, LocalDate.of(2004,12,18)));
+        listaOsob.add(new Osoba("Michał", 173, LocalDate.of(2008,2,6)));
+        listaOsob.add(new Osoba("Wojciech", 195, LocalDate.of(1998,5,3)));
+        System.out.println(listaOsob);
+        Collections.sort(listaOsob);
+        System.out.println(listaOsob);
+    }
+}
+//DOKONCZYC
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class Produkt implements Comparator<Produkt>{
+    String nazwa;
+    double cena;
+    LocalDate dataWaznosci;
+
+    public Produkt(String nazwa, double cena, LocalDate dataWaznosci) {
+        this.nazwa = nazwa;
+        this.cena = cena;
+        this.dataWaznosci = dataWaznosci;
+    }
+
+    @Override
+    public int compare(Produkt o1, Produkt o2) {
+        return o1.dataWaznosci.compareTo(o2.dataWaznosci);
+    }
+    public static void main(String[] args){
+        ArrayList<Produkt>
+    }
+}
