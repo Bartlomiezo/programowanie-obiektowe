@@ -1,0 +1,235 @@
+public interface Authentication {
+    abstract boolean login(String username, String password);
+    abstract void logout();
+    abstract boolean resetPassword(String username, String oldPassword, String newPassword);
+}
+public class AdminAuthentication implements Authentication{
+    String username;
+    String password;
+    public AdminAuthentication(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+    @Override
+    public boolean login(String username, String password){
+        if(username.equals(this.username)&& password.equals(this.password)){
+            return true;}
+        else{
+            return false;}
+    }
+
+    @Override
+    public void logout() {
+        System.out.println("logged out");
+    }
+
+    @Override
+    public boolean resetPassword(String username, String oldPassword, String newPassword) {
+        if(oldPassword.equals(this.password) && username.equals(this.username)){
+            this.password = newPassword;
+            return true;}
+        else{
+            return false;
+        }
+    }
+}
+public class UserAuthentication implements Authentication{
+    String username;
+    String password;
+    public UserAuthentication(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+    @Override
+    public boolean login(String username, String password){
+        if(username.equals(this.username)&& password.equals(this.password)){
+            return true;}
+        else{
+            return false;}
+        }
+
+    @Override
+    public void logout() {
+        System.out.println("logged out");
+    }
+
+    @Override
+    public boolean resetPassword(String username, String oldPassword, String newPassword) {
+        if(oldPassword.equals(this.password) && username.equals(this.username)){
+            this.password = newPassword;
+            return true;}
+        else{
+            return false;
+        }
+    }
+}
+public class AuthenticationTest {
+    public static void main(String[] args) {
+        UserAuthentication u1 = new UserAuthentication("lis","bartek");
+        System.out.println(u1.login("lis","bartek"));
+        System.out.println(u1.resetPassword("lis", "bartek", "bartek1"));
+        u1.logout();
+        AdminAuthentication a1 = new AdminAuthentication("wiesniasz","scaniatrucks");
+        System.out.println(a1.login("wiesniasz","scaniatrucks"));
+        System.out.println(a1.resetPassword("wiesniasz", "scaniatrucks", "iveconiezajedzieszdaleko"));
+        a1.logout();
+    }
+}
+public interface Sensor {
+    abstract double readValue();
+    abstract String getStatus();
+    abstract void reset();
+}
+public class TemperatureSensor implements Sensor{
+    double temperatura;
+    String status;
+    public TemperatureSensor(double temperatura, String status){
+        this.temperatura = temperatura;
+        this.status = status;
+    }
+    @Override
+    public double readValue() {
+        return temperatura;
+    }
+
+    @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public void reset() {
+        this.temperatura = 0;
+        this.status = "NaN";
+        System.out.println("reset");
+    }
+}
+public class PressureSensor implements Sensor {
+    double cisnienie;
+    String status;
+    public PressureSensor(double cisnienie, String status){
+        this.cisnienie = cisnienie;
+        this.status = status;
+    }
+
+    @Override
+    public double readValue() {
+        return cisnienie;
+    }
+
+    @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public void reset() {
+        this.cisnienie = 0;
+        this.status = "NaN";
+        System.out.println("reset");
+    }
+}
+public class SensorTest {
+    public static void main(String[] args){
+        TemperatureSensor t1 = new TemperatureSensor(20,"cieplo");
+        PressureSensor p1 = new PressureSensor(970, "w normie");
+        System.out.println(t1.readValue());
+        System.out.println(t1.getStatus());
+        t1.reset();
+        System.out.println(p1.readValue());
+        System.out.println(p1.getStatus());
+        p1.reset();
+        System.out.println(p1.readValue());
+    }
+}
+public interface LoudAnimal {
+    abstract void makeNoise();
+}
+class Dog implements LoudAnimal{
+        public void makeNoise(){
+            System.out.println("hau hau");
+        }
+}
+class Cat implements LoudAnimal{
+    public void makeNoise(){
+        System.out.println("miau miau");
+    }
+}
+public interface MyComparator {
+    abstract int compare(int a, int b);
+}
+class testComparator implements MyComparator{
+    public int compare(int a, int b){
+        if(a < b){
+            return -1;
+        } else if (a==b) {
+            return 0;
+        }
+        else{
+            return 1;
+        }
+    }
+}
+public interface DataProcessor {
+    abstract String processData(String data);
+    abstract boolean isValid(String data);
+}
+public class TextProcessor implements DataProcessor {
+    @Override
+    public String processData(String data) {
+        String so = "";
+        for(int i=data.length()-1; i>=0;i--){
+            so = so+ data.charAt(i);
+        }
+        return so;
+    }
+
+    @Override
+    public boolean isValid(String data) {
+        if(data != null){
+            if(data.getClass().getSimpleName().equals("String")){
+                return true;
+            }
+            return false;
+        }
+        else{
+            return false;
+        }
+    }
+}
+public class NumberProcessor implements DataProcessor{
+
+    @Override
+    public String processData(String data) {
+        String so = "";
+        for(int i=data.length()-1; i>=0;i--){
+            so = so+ data.charAt(i);
+        }
+        return "Processed: " + so;
+    }
+
+    @Override
+    public boolean isValid(String data) {
+        if(data.matches("-?\\d+(\\.\\d+)?")){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
+public class TestDataProcessor {
+    public static void main(String[] args){
+        TextProcessor t1 = new TextProcessor();
+        System.out.println(t1.processData("Bartek"));
+        System.out.println(t1.isValid());
+        NumberProcessor n1 = new NumberProcessor();
+        System.out.println(n1.processData("123"));
+        System.out.println(n1.isValid("Bartek"));
+    }
+}
+
+
+
+
+
