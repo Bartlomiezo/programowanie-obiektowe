@@ -1,0 +1,117 @@
+public interface Printer {
+    void drukuj(String tekst);
+}
+public class StandardowyPrinter implements Printer{
+
+    @Override
+    public void drukuj(String tekst) {
+        System.out.println(tekst);
+    }
+}
+public class Biuro{
+    private final Printer printer;
+    public Biuro(Printer printer){
+        this.printer = printer;
+    }
+    public void drukujDokument(String tekst){
+        printer.drukuj(tekst);
+    }
+}
+public interface Silnik {
+    void uruchom();
+    void zatrzymaj();
+}
+public class BenzynowySilnik implements Silnik{
+    @Override
+    public void uruchom(){
+        System.out.println("dzwieki samochodu");
+    }
+    @Override
+    public void zatrzymaj(){
+        System.out.println("zatrzymano");
+    }
+}
+public class Samochod {
+    private final Silnik silnik;
+    public Samochod(Silnik silnik){
+        this.silnik = silnik;
+    }
+    public void uruchom(){
+        silnik.uruchom();
+    }
+    public void zatrzymaj(){
+        silnik.zatrzymaj();
+    }
+}
+public interface Powiadomienie {
+    void wyślij(String wiadomość);
+}
+public class Email implements Powiadomienie{
+    @Override
+    public void wyślij(String wiadomość) {
+        System.out.println("Bla bla bla bla wyslano wiadomosc");
+    }
+}
+public class Użytkownik {
+    private final Powiadomienie powiadomienie;
+
+    public Użytkownik(Powiadomienie powiadomienie) {
+        this.powiadomienie = powiadomienie;
+    }
+    public void powiadomOModernizacji(String informacja){
+        powiadomienie.wyślij(informacja);
+    }
+}
+public class Wiek {
+    public void checkAge(int age){
+        if(age<18){
+            throw new IllegalArgumentException("Za mlody");
+        }else{
+            System.out.println("Jest git");
+        }
+
+    }
+}
+import java.util.InputMismatchException;
+import java.util.Scanner;
+public class Main {
+    public static void sprawdzFormatDanych(String dane) throws NiepoprawnyFormatDanychException {
+        if(dane.length()<5){
+            throw new NiepoprawnyFormatDanychException("Ciag danych jest za krótki");
+        }else{
+            System.out.println(dane);
+        }
+    }
+    public static void main(String[] args) throws NiepoprawnyFormatDanychException {
+        Wiek wiek = new Wiek();
+        try {
+            wiek.checkAge(18);
+        }
+        catch(IllegalArgumentException e){
+            System.out.println("Za mlody jestes");
+        }
+        Scanner scanner = new Scanner(System.in);
+        boolean bool1 = true;
+        while(bool1){
+            try{
+                System.out.println("Podaj x:");
+                int x = scanner.nextInt();
+                System.out.println("Podaj y:");
+                int y = scanner.nextInt();
+                int z = x/y;
+                System.out.println(z);
+                bool1 = false;
+            }
+            catch(ArithmeticException e){
+                System.out.println("wprowadz poprawne dane");
+            }
+            catch (InputMismatchException e){
+                scanner.next();
+                System.out.println("wprowadz poprawne dane");
+            }
+        }
+      sprawdzFormatDanych("cebularz");
+      sprawdzFormatDanych("Koń");
+    }
+}
+
