@@ -1,0 +1,92 @@
+public class Main{
+    static <T> boolean isEqual(T object1, T object2){
+        return object1.equals(object2);
+    }
+    static <T> void swap(T[] a, int i, int j){
+        if(a.length<i || a.length < j) throw new ArrayIndexOutOfBoundsException();
+        T temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+    public static <T extends Comparable<T>> T minValue(T[] a){
+        if(a.length == 0) throw new IllegalArgumentException();
+        T min = a[0];
+        for(int i = 1; i < a.length;i++){
+            if(min.compareTo(a[i])>0){
+                min = a[i];
+            }
+        }
+        return min;
+    }
+    public static <T extends Animal> T findMax(T a, T b){
+        return a.hashCode()>b.hashCode() ? a : b;
+    }
+
+    public static void main(String[] args) {
+//        Box<Integer> box = new Box<>(3);
+//        System.out.println(box.value);
+//        System.out.println(isEqual(2,2));
+//        Triple<Integer, String, Integer> test = new Triple<>(5,"Wiesniasz", 8);
+//        System.out.println(test.getFirst());
+//        System.out.println(test.getSecond());
+//        System.out.println(test.getThird());
+    }
+}
+public final class Dog extends Animal {
+}
+public class Animal {
+}
+import java.util.List;
+public class Counter <T>{
+    private int licznik = 0;
+    private final List<T> list;
+
+    public Counter(List<T> list) {
+        this.list = list;
+    }
+
+    public void add(T element){
+        list.add(element);
+        licznik +=1;
+    }
+
+    public int getCount() {
+        return licznik;
+    }
+}
+public class Triple <T, U, V>{
+    T t;
+    U u;
+    V v;
+
+    public Triple(T t, U u, V v) {
+        this.t = t;
+        this.u = u;
+        this.v = v;
+    }
+
+    public T getFirst() {
+        return t;
+    }
+
+    public U getSecond() {
+        return u;
+    }
+
+    public V getThird() {
+        return v;
+    }
+}
+public class Box <T> {
+    public T value;
+    public Box(T value){
+        this.value=value;
+    }
+    public T getValue(){
+        return value;
+    }
+    public void setValue(T value){
+        this.value=value;
+    }
+
+}
