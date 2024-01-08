@@ -1,0 +1,245 @@
+package zad1;
+
+public record Person(String imie, int wiek) {
+    public Person{
+        if(wiek<0){
+            wiek = 0;
+        }
+    }
+}
+package zad1;
+
+public class Main {
+    public static void main(String[] args) {
+        Person p1 = new Person("Bartek", 21);
+        Person p2 = new Person("Michał", -8);
+        System.out.println(p1.imie()+ " " + p1.wiek());
+        System.out.println(p2.imie()+ " " + p2.wiek());
+    }
+}
+package zad2;
+
+public interface Silnik {
+    void uruchom();
+    void zatrzymaj();
+}
+package zad2;
+
+public class BenzynowySilnik implements Silnik {
+    @Override
+    public void uruchom() {
+        System.out.println("brum brum brum");
+    }
+
+    @Override
+    public void zatrzymaj() {
+        System.out.println("prrrr *zderzenie czolowe z ciezarowka*");
+    }
+}
+package zad2;
+
+public class Samochod {
+    private Silnik silnik;
+    public Samochod(Silnik silnik){
+        this.silnik = silnik;
+    }
+    public void start(){
+        silnik.uruchom();
+    }
+    public void stop(){
+        silnik.zatrzymaj();
+    }
+}
+package zad2;
+
+public class testZad2 {
+    public static void main(String[] args){
+        BenzynowySilnik s1 = new BenzynowySilnik();
+        Samochod polonez = new Samochod(s1);
+        polonez.start();
+        polonez.stop();
+
+    }
+}
+package zad3;
+
+public class Music implements Comparable<Music> {
+    String title;
+    String artist;
+    int releaseYear;
+
+    public Music(String title, String artist, int releaseYear) {
+        this.title = title;
+        this.artist = artist;
+        this.releaseYear = releaseYear;
+    }
+
+    @Override
+    public int compareTo(Music o) {
+        return Integer.compare(releaseYear, o.releaseYear);
+    }
+    @Override
+    public String toString(){
+        return "Music(" + "title=" + title + "\'"+
+                ", artist=" + artist + "\'" +
+                ", releaseYear=" + releaseYear + ")";
+    }
+}
+package zad3;
+
+import java.util.Comparator;
+
+public class MusicComparator implements Comparator<Music> {
+    @Override
+    public int compare(Music o1, Music o2) {
+        return Integer.compare(o1.releaseYear, o2.releaseYear);
+    }
+}
+public class testZad3 {
+    public static void main(String[] args){
+        Music m1 = new Music("A", "a", 2000);
+        Music m2 = new Music("B", "b", 1992);
+        Music m3 = new Music("C", "c", 2007);
+        Music m4 = new Music("D", "d", 1998);
+        ArrayList<Music> musicList = new ArrayList<>(Arrays.asList(m1,m2,m3,m4));
+        for (var item : musicList){
+            System.out.println(item.releaseYear);
+        }
+        Collections.sort(musicList);
+        for(var item : musicList){
+            System.out.println(item.releaseYear);
+        }
+        System.out.println("______________");
+        Music m5 = new Music("E", "e",2023);
+        Music m6 = new Music("F", "f",2020);
+        Music m7 = new Music("G", "g",2019);
+        Music m8 = new Music("H", "h",2004);
+        ArrayList<Music> musicList2 = new ArrayList<>(Arrays.asList(m5,m6,m7,m8));
+        for(var item : musicList2){
+            System.out.println(item.releaseYear);
+        }
+        System.out.println("_____________");
+        Collections.sort(musicList2);
+        for(var item : musicList2){
+            System.out.println(item.releaseYear);
+        }
+    }
+}
+package zad4;
+
+import java.util.Date;
+
+public class VideoGame implements Cloneable {
+    String title;
+    String genre;
+    Date releaseDate;
+
+    public VideoGame(String title, String genre, Date releaseDate) {
+        this.title = title;
+        this.genre = genre;
+        this.releaseDate = releaseDate;
+    }
+    @Override
+    protected Object clone() throws CloneNotSupportedException{
+        return super.clone();
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    @Override
+    public String toString() {
+        return "VideoGame{" +
+                "title='" + title + '\'' +
+                ", genre='" + genre + '\'' +
+                ", releaseDate=" + releaseDate +
+                '}';
+    }
+}
+package zad4;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class testZad4 {
+    public static void main(String args[]){
+
+        VideoGame game = new VideoGame("CS2", "fps", new Date(2023, Calendar.OCTOBER, 3));
+        System.out.println(game.title + " " + game.genre +" "+ game.getReleaseDate());
+        try{
+            VideoGame otherGame = (VideoGame) game.clone();
+            otherGame.setReleaseDate(new Date(2022,Calendar.MAY, 4));
+            System.out.println(game.toString());
+            System.out.println(otherGame.toString());
+        } catch (CloneNotSupportedException e){
+            throw new RuntimeException(e);
+        }
+    }
+}
+package zad5;
+
+public record DoubleElement<T>(T left, T right) {
+}
+package zad5;
+
+public class Person {
+    private final int age;
+
+    public Person(int age) {
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+package zad5;
+
+public class Student extends Person{
+    public Student(int age){
+        super(age);
+    }
+}
+package zad5;
+
+public class testZad5 {
+    private testZad5(){}
+    static Person FindYoungest(DoubleElement<? extends Person> pair){
+        return pair.left().getAge() < pair.right().getAge() ? pair.left() : pair.right();
+    }
+    public static void main(String[] args){
+        System.out.println(FindYoungest(new DoubleElement<Student>(new Student(5), new Student(7))).getAge());
+    }
+}
+package zad6;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Program {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean run = true;
+        while(run) {
+            try {
+                int x = scanner.nextInt();
+                int y = scanner.nextInt();
+                int wynik = x / y;
+                System.out.println(wynik);
+                run = false;
+            } catch (InputMismatchException e) {
+                System.out.println("Wpisz ponownie liczbe i nie wolno dzielic przez 0");
+                scanner.nextLine();
+            }
+            catch(ArithmeticException e){
+
+                System.out.println("Nie wolno dzielic przez 0");
+            }
+        }
+    }
+}
